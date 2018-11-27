@@ -75,7 +75,8 @@ module MultiDaemons
 
           yield
         rescue Exception => e
-          puts e
+          puts e.message
+          puts e.backtrace
         end
       end
     end
