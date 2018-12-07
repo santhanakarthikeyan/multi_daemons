@@ -33,7 +33,7 @@ describe MultiDaemons::Daemon do
       it 'should catch any exception raised inside the block' do
         throw_exception_proc.start
         sleep 1
-        File.read(log_file).strip.must_equal 'test exception'
+        File.read(log_file).strip.must_match /test exception/
       end
     end
 
