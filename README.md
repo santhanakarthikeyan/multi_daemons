@@ -35,11 +35,12 @@ looper = MultiDaemons::Daemon.new(proc_code, name: 'looper', type: :proc, option
 MultiDaemons.runner([scheduler, looper], { force_kill_timeout: 60 })
 ```
 
-To run as daemon
+Below are the commands supported
 ```ruby
 ruby server.rb start
 ruby server.rb stop
 ruby server.rb restart
+ruby server.rb status
 ```
 
 To run single daemon within a script.
