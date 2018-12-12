@@ -77,6 +77,7 @@ module MultiDaemons
         rescue Exception => e
           puts e.message
           puts e.backtrace
+          ErrorReporter.report(e, class: self.class.name, name: name, type: type, options: options)
         end
       end
     end
