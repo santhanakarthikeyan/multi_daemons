@@ -67,11 +67,33 @@ looper = MultiDaemons::Daemon.new(proc_code, name: 'looper', type: :proc, option
 MultiDaemons.runner([looper], { force_kill_timeout: 60 })
 ```
 
+We can even stop/start single daemon
+```ruby
+ruby server.rb start looper
+
+or 
+
+ruby server.rb stop looper
+```
+
+
 ### Supported options for runner:
 force_kill_timeout: <integer> # To kill all running daemons within the specified time.
 
 ### Supported option for Daemon:
 force_kill_timeout, log_dir, pid_dir
+
+### Error reporter
+
+You may edit the error reporter to notify about any exception inside the daemon in a custom way. To notify Errbit or HoneyBadger use the following configuration
+
+```ruby
+MultiDaemons.error_reporters = [ proc { |exception, _worker, context_hsh| Airbrake.notify(exception, context_hsh) } ]
+
+or 
+
+MultiDaemons.error_reporters = [ proc { |exception, _worker, context_hsh| HoneyBadger.notify(exception, context_hsh) } ]
+```
 
 ## Development
 
