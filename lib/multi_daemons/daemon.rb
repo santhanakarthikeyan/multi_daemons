@@ -72,6 +72,7 @@ module MultiDaemons
           STDIN.reopen '/dev/null'
           STDOUT.reopen log
           STDERR.reopen STDOUT
+          STDOUT.sync = true
 
           yield
         rescue Exception => e
