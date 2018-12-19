@@ -46,6 +46,10 @@ describe MultiDaemons do
       ARGV[0] = nil
     end
 
+    it 'should raises when ARGV is not valid' do
+      -> { runner }.must_raise ''
+    end
+
     it 'should raise error when daemons are empty' do
       -> { MultiDaemons.runner([]) }.must_raise RuntimeError, 'Daemons are not present or invalid'
     end

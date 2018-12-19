@@ -66,4 +66,15 @@ describe MultiDaemons::Controller do
       out.strip.must_equal "test(123): \e[31mDied\e[0m"
     end
   end
+
+  describe 'filter daemons' do
+    it 'should fail if filter daemon not exist' do
+      ARGV[1] = 'random'
+      out, _err = capture_io do
+        MultiDaemons::Controller.new([daemon])
+      end
+      out.strip.must_equal 'Daemon [random] not exist. Available ones are ["test"]'
+      ARGV[1] = nil
+    end
+  end
 end

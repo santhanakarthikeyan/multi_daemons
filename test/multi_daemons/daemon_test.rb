@@ -2,7 +2,7 @@ require 'test_helper'
 
 describe MultiDaemons::Daemon do
   let(:script_daemon) { MultiDaemons::Daemon.new('bash ' + File.expand_path('../scripts/test_daemon_script.sh', __dir__), name: 'daemon_test', type: :script) }
-  let(:proc_daemon) { MultiDaemons::Daemon.new(proc { puts 'daemon_test started' }, name: 'daemon_test', type: :proc) }
+  let(:proc_daemon) { MultiDaemons::Daemon.new(proc { puts 'daemon_test started' }, name: 'daemon_test', type: :proc, options: { log_dir: '.', pid_dir: '.' }) }
   let(:long_runing_proc_daemon) { MultiDaemons::Daemon.new(proc { sleep 5 }, name: 'daemon_test', type: :proc) }
   let(:throw_exception_proc) { MultiDaemons::Daemon.new(proc { raise 'test exception' }, name: 'daemon_test', type: :proc) }
   let(:log_file) { proc_daemon.send(:log_file) }
@@ -44,6 +44,17 @@ describe MultiDaemons::Daemon do
         File.read(log_file).strip.must_equal 'test daemon script started'
       end
     end
+
+    it 'should allow invalid type' do
+      MultiDaemons::Daemon.any_instance.expects(:safe_fork).never
+      proc_daemon.type = nil
+      proc_daemon.start
+    end
+
+    it 'should invoke safe_fork' do
+      Process.expects(:fork).once
+      proc_daemon.start
+    end
   end
 
   describe '#stop' do
@@ -61,6 +72,37 @@ describe MultiDaemons::Daemon do
       proc_daemon.stop
       sleep 1
       File.exist?(pid_file).must_equal false
+    end
+
+    it 'should warn if pid file not found' do
+      File.stubs(:file?).returns(false)
+      out, _err = capture_io do
+        proc_daemon.stop
+      end
+      out.strip.must_equal 'Pid file not found. Is daemon running?'
+    end
+
+    it 'should capture ESRCH error while killing a job' do
+      File.stubs(:file?).returns(true)
+      Process.stubs(:kill).raises(Errno::ESRCH)
+      proc_daemon.stop
+    end
+  end
+
+  describe 'process_fork' do
+    it 'should execute process_fork' do
+      Process.expects(:setsid).once
+      STDOUT.expects(:reopen).once
+      STDIN.expects(:reopen).once
+      STDERR.expects(:reopen).once
+      proc_daemon.send(:process_fork)
+    end
+
+    it 'should capture any exception' do
+      Process.stubs(:setsid).raises
+      out, _err = capture_io do
+        proc_daemon.send(:process_fork)
+      end
     end
   end
 end
