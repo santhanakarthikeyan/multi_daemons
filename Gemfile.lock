@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    multi_daemons (0.1.4)
+    multi_daemons (1.0.0)
 
 GEM
   remote: https://rubygems.org/

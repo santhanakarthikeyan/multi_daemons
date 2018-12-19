@@ -47,7 +47,7 @@ describe MultiDaemons::Controller do
       out, _err = capture_io do
         controller.status
       end
-      out.strip.must_equal "test(): \e[31mDied\e[0m"
+      out.strip.must_equal "test-: \e[31mDied\e[0m"
     end
 
     it 'should return running if daemon is running' do
@@ -55,7 +55,7 @@ describe MultiDaemons::Controller do
       out, _err = capture_io do
         controller.status
       end
-      out.strip.must_equal "test(): \e[32mRunning\e[0m"
+      out.strip.must_equal "test-: \e[32mRunning\e[0m"
     end
 
     it 'should display pid is exist' do
@@ -63,7 +63,7 @@ describe MultiDaemons::Controller do
       out, _err = capture_io do
         controller.status
       end
-      out.strip.must_equal "test(123): \e[31mDied\e[0m"
+      out.strip.must_equal "test-123: \e[31mDied\e[0m"
     end
   end
 

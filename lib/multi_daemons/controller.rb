@@ -30,14 +30,12 @@ module MultiDaemons
     end
 
     def status
-      daemon_attrs = []
+      daemon_attrs = {}
       daemons.each do |daemon|
-        daemon_attrs << { name: daemon.name, pids: daemon.pids }
+        daemon.pids.each { |pid| daemon_attrs["#{daemon.name}-#{pid}"] = pid }
       end
-      daemon_attrs.each do |hsh|
-        hsh[:pids].each do |pid|
-          puts "#{hsh[:name]}(#{pid}): #{print_status(Pid.running?(pid))}"
-        end
+      daemon_attrs.each do |pid_name, pid|
+        puts "#{pid_name}: #{print_status(Pid.running?(pid))}"
       end
     end
 

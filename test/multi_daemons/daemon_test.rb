@@ -100,7 +100,7 @@ describe MultiDaemons::Daemon do
 
     it 'should capture any exception' do
       Process.stubs(:setsid).raises
-      out, _err = capture_io do
+      capture_io do
         proc_daemon.send(:process_fork)
       end
     end
