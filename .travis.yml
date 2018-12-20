@@ -1,0 +1,9 @@
+language: ruby
+rvm:
+  - 2.2
+sudo: false
+notifications:
+  email:
+    - santhanakarthikeyan.s@gmail.com
+  on_success: always
+  on_failures: always
