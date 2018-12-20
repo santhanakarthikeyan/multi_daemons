@@ -6,6 +6,11 @@ describe MultiDaemons::Pid do
       MultiDaemons::Pid.running?(Process.pid).must_equal true
     end
 
+    it 'should capture any exception' do
+      Process.stubs(:kill).raises
+      MultiDaemons::Pid.running?(123).must_equal true
+    end
+
     describe 'return false' do
       it 'when pid is nil' do
         MultiDaemons::Pid.running?(nil).must_equal false
@@ -14,6 +19,13 @@ describe MultiDaemons::Pid do
       it 'when pid out of range' do
         MultiDaemons::Pid.running?(123_456_789).must_equal false
       end
+    end
+  end
+
+  describe 'default_timeout' do
+    it 'should return default timeout value' do
+      MultiDaemons::Pid.default_timeout
+                       .must_equal MultiDaemons::Pid::KILL_TIMEOUT
     end
   end
 

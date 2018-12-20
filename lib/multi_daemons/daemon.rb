@@ -59,27 +59,31 @@ module MultiDaemons
       "#{log_dir}#{name}.log"
     end
 
-    def safe_fork
+    def process_fork
+      begin
+        Process.setsid
+
+        $0 = name || $PROGRAM_NAME
+
+        PidStore.store(pid_file, Process.pid)
+
+        log = File.new(log_file, 'a')
+        STDIN.reopen '/dev/null'
+        STDOUT.reopen log
+        STDERR.reopen STDOUT
+        STDOUT.sync = true
+
+        yield if block_given?
+      rescue Exception => e
+        puts e.message
+        puts e.backtrace
+        ErrorReporter.report(e, class: self.class.name, name: name, type: type, options: options)
+      end
+    end
+
+    def safe_fork(&block)
       Process.fork do
-        begin
-          Process.setsid
-
-          $0 = name || $PROGRAM_NAME
-
-          PidStore.store(pid_file, Process.pid)
-
-          log = File.new(log_file, 'a')
-          STDIN.reopen '/dev/null'
-          STDOUT.reopen log
-          STDERR.reopen STDOUT
-          STDOUT.sync = true
-
-          yield
-        rescue Exception => e
-          puts e.message
-          puts e.backtrace
-          ErrorReporter.report(e, class: self.class.name, name: name, type: type, options: options)
-        end
+        process_fork(&block)
       end
     end
 

@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = 'MultiDaemon provides an wrapper to run multiple daemon scripts'
   spec.description   = 'MultiDaemon provides an warpper to run multiple daemon scripts which can be controlled by start/stop and restart commands'
-  spec.homepage      = %q{https://github.com/santhanakarthikeyan/multi_daemons}
+  spec.homepage      = 'https://github.com/santhanakarthikeyan/multi_daemons'
   spec.license       = 'MIT'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
@@ -35,4 +35,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'minitest', '~> 5.0'
   spec.add_development_dependency 'mocha', '~> 1.7'
   spec.add_development_dependency 'rake', '~> 10.0'
+  spec.add_development_dependency 'simplecov'
 end
