@@ -8,7 +8,9 @@ module MultiDaemons
       @options = options
       unless ARGV[1].to_s.empty?
         @daemons = filter_daemons(daemons)
-        puts "Daemon [#{ARGV[1]}] not exist. Available ones are #{daemons.map(&:name)}" if @daemons.empty?
+        msg = "Daemon [#{ARGV[1]}] not exist."\
+              " Available ones are #{daemons.map(&:name)}"
+        Log.log msg if @daemons.empty?
       end
     end
 

@@ -22,7 +22,7 @@ module MultiDaemons
           Kernel.exec(daemon)
         end
       else
-        puts 'Unsupported type'
+        Log.log 'Unsupported type'
       end
     end
 
@@ -32,7 +32,7 @@ module MultiDaemons
           begin
             Process.kill('TERM', pid)
           rescue Errno::ESRCH => e
-            puts "#{e} #{pid}"
+            Log.log "#{e} #{pid}"
           end
         end
 
@@ -41,7 +41,7 @@ module MultiDaemons
         Pid.force_kill(pids, options[:force_kill_timeout])
         PidStore.cleanup(pid_file)
       else
-        puts 'Pid file not found. Is daemon running?'
+        Log.log 'Pid file not found. Is daemon running?'
       end
     end
 
@@ -75,8 +75,8 @@ module MultiDaemons
 
         yield if block_given?
       rescue Exception => e
-        puts e.message
-        puts e.backtrace
+        Log.log e.message
+        Log.log e.backtrace
         ErrorReporter.report(e, class: self.class.name, name: name, type: type, options: options)
       end
     end

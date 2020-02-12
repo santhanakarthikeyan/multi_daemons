@@ -26,16 +26,16 @@ module MultiDaemons
       private
 
       def invalid_multi_daemon_option
-        puts 'Daemons are not present or invalid'
+        Log.log 'Daemons are not present or invalid'
       end
 
       def daemon_name_error
-        puts 'Daemon name should not be empty'
+        Log.log 'Daemon name should not be empty'
         false
       end
 
       def daemon_proc_error
-        puts 'Daemons type is proc but proc block has not been passed'
+        Log.log 'Daemons type is proc but proc block has not been passed'
         false
       end
     end
