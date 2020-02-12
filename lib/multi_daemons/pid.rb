@@ -23,7 +23,7 @@ module MultiDaemons
       end
       true
     rescue Timeout::Error
-      puts 'Force stopping processes'
+      Log.log 'Force stopping processes'
       pids.each do |pid|
         begin
           Process.kill('KILL', pid)
@@ -38,7 +38,7 @@ module MultiDaemons
           end
         end
       rescue Timeout::Error
-        puts 'Can not stop processes'
+        Log.log 'Can not stop processes'
         return false
       end
     end

@@ -7,8 +7,9 @@ module MultiDaemons
         begin
           reporter.call(exception, self, context_hash)
         rescue => inner_exception
-          puts inner_exception
-          puts inner_exception.backtrace.join("\n") unless inner_exception.backtrace
+          Log.log inner_exception
+          backtrace = inner_exception.backtrace.join("\n")
+          Log.log backtrace unless inner_exception.backtrace
         end
       end
     end

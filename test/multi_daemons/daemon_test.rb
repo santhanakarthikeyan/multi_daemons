@@ -79,7 +79,7 @@ describe MultiDaemons::Daemon do
       out, _err = capture_io do
         proc_daemon.stop
       end
-      out.strip.must_equal 'Pid file not found. Is daemon running?'
+      out.strip.must_match 'Pid file not found. Is daemon running?'
     end
 
     it 'should capture ESRCH error while killing a job' do
