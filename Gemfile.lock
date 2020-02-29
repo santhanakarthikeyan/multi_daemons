@@ -13,7 +13,7 @@ GEM
     minitest (5.11.3)
     mocha (1.7.0)
       metaclass (~> 0.0.1)
-    rake (10.5.0)
+    rake (13.0.1)
     simplecov (0.16.1)
       docile (~> 1.1)
       json (>= 1.8, < 3)
@@ -29,7 +29,7 @@ DEPENDENCIES
   minitest (~> 5.0)
   mocha (~> 1.7)
   multi_daemons!
-  rake (~> 10.0)
+  rake (~> 13.0)
   simplecov
 
 BUNDLED WITH
